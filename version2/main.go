@@ -32,8 +32,9 @@ func main() {
 		log.Fatal("Invalid download URL")
 	}
 
-	// Download the file using Aria2c
-	cmd := exec.Command(aria2cPath, url)
+	// Download the file using Aria2c 
+	// The split flag will allow aria2c to download the file using 16 connections, which can speed up the download process
+	cmd := exec.Command(aria2cPath, "--split=16", url)
 	err := cmd.Run()
 	if err != nil {
 		log.Fatal(err)
