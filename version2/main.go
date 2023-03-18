@@ -16,11 +16,14 @@ import (
 	"golang.org/x/crypto/openpgp/armor"
 	"golang.org/x/crypto/openpgp/packet"
 )
+
 const (
 	aria2cPath        = "/usr/bin/aria2c"
 	encryptedDirPath  = "./encrypted"
 	publicKeyFilePath = "./publicKey.asc"
+	minFreeSpace      = 5 * 1024 * 1024 * 1024 // 5GB
 )
+
 func main() {
 	reader := bufio.NewReader(os.Stdin)
 
@@ -32,12 +35,31 @@ func main() {
 		log.Fatal("Invalid download URL")
 	}
 
+	// Check if the download file size is greater than or equal to the free space in the encrypted directory
+	downloadFileInfo, err := os.Stat("./downloadedFile")
+	if err != nil {
+		log.Fatal(err)
+	}
+	if downloadFileInfo.Size() >= minFreeSpace {
+		log.Fatal("Not enough free space in the encrypted directory")
+	}
+
 	// Download the file using Aria2c 
 	// The split flag will allow aria2c to download the file using 16 connections, which can speed up the download process
 	cmd := exec.Command(aria2cPath, "--split=16", url)
-	err := cmd.Run()
+	err = cmd.Run()
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	// Check if there is enough free space in the encrypted directory for the downloaded file
+	downloadedFileSize := downloadFileInfo.Size()
+	encryptedDirStat, err := os.Stat(encryptedDirPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if encryptedDirStat.Size()+downloadedFileSize >= minFreeSpace {
+		log.Fatal("Not enough free space in the encrypted directory")
 	}
 
 	// Open the encrypted directory for writing
