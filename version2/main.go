@@ -69,7 +69,7 @@ func main() {
 	}
 	defer encryptedDir.Close()
 
-	// Create a new armored file for the encrypted data
+	// Create a new armored file for the encrypted data 
 	armored, err := armor.Encode(encryptedDir, "PGP MESSAGE", map[string]string{
 		"Version":           packet.DefaultVersion,
 		"Comment":           "Encrypted data",
