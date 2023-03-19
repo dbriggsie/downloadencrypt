@@ -6,10 +6,10 @@ name: Go
 on:
   push:
     paths:
-      - 'version2/**'
+      - 'version2/main.go'
   pull_request:
     paths:
-      - 'version2/**'
+      - 'version2/main.go'
 
 jobs:
 
