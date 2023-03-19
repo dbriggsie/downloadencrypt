@@ -5,11 +5,9 @@ name: Go
 
 on:
   push:
-    paths:
-      - 'version2/main.go'
+    branches: [ "main" ]
   pull_request:
-    paths:
-      - 'version2/main.go'
+    branches: [ "main" ]
 
 jobs:
 
@@ -22,9 +20,6 @@ jobs:
       uses: actions/setup-go@v3
       with:
         go-version: 1.19
-        
-    - name: go get
-      run: go get
 
     - name: Build
       run: go build -v 
