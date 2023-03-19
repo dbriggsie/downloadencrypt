@@ -27,7 +27,7 @@ const (
 func main() {
 	reader := bufio.NewReader(os.Stdin)
 
-	// Get the download URL from user input and validate it 
+	// Get the download URL from user input and validate it
 	fmt.Print("Enter download URL: ")
 	url, _ := reader.ReadString('\n')
 	url = strings.TrimSpace(url)
