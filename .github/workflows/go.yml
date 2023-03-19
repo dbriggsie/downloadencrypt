@@ -20,7 +20,12 @@ jobs:
       uses: actions/setup-go@v3
       with:
         go-version: 1.19
-  
+   
+    - name: Build
+      run: go get golang.org/x/crypto/chacha20poly1305
+	    run: golang.org/x/crypto/openpgp
+	    run: golang.org/x/crypto/openpgp/armor
+	    run: golang.org/x/crypto/openpgp/packet
 
     - name: Build
       run: go build -v 
