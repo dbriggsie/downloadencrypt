@@ -52,7 +52,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Check if there is enough free space in the encrypted directory for the downloaded file
+	// Check if there is enough free space in the encrypted directory for the downloaded file 
 	downloadedFileSize := downloadFileInfo.Size()
 	encryptedDirStat, err := os.Stat(encryptedDirPath)
 	if err != nil {
