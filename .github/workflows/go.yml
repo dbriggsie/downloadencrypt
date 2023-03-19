@@ -21,14 +21,14 @@ jobs:
       with:
         go-version: 1.19
    
-    - name: Go Get 1
-      run: go get golang.org/x/crypto/chacha20poly1305
-    - name: Go Get 2
-      run: go get golang.org/x/crypto/openpgp
-    - name: Go Get 3
-      run: go get golang.org/x/crypto/openpgp/armor
-    - name: Go Get 4
-      run: go get golang.org/x/crypto/openpgp/packet
+    - name: Go install 1
+      run: go install golang.org/x/crypto/chacha20poly1305@latest
+    - name: Go install 2
+      run: go install golang.org/x/crypto/openpgp@latest
+    - name: Go install 3
+      run: go install golang.org/x/crypto/openpgp/armor@latest
+    - name: Go install 4
+      run: go install golang.org/x/crypto/openpgp/packet@latest
 
     - name: Build
       run: go build -v 
