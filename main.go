@@ -89,7 +89,7 @@ func main() {
 	publicKey, _ := reader.ReadString('\n')
 	publicKey = strings.TrimSpace(publicKey)
 
-	// Parse the recipient public key
+	// Parse the recipient public key 
 	entityList, err := openpgp.ReadArmoredKeyRing(strings.NewReader(publicKey))
 	if err != nil {
 		log.Fatal(err)
