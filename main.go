@@ -2,16 +2,12 @@ package main
 
 import (
 	"bufio"
-	"crypto/rand"
-	"crypto/sha256"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
 	"strings"
 
-	"golang.org/x/crypto/chacha20poly1305" 
 	"golang.org/x/crypto/openpgp"
 	"golang.org/x/crypto/openpgp/armor"
 	"golang.org/x/crypto/openpgp/packet"
@@ -69,15 +65,15 @@ func main() {
 	}
 	defer encryptedDir.Close()
 
-	// Create a new armored file for the encrypted data  
+	// Create a new armored file for the encrypted data 
 	armored, err := armor.Encode(encryptedDir, "PGP MESSAGE", map[string]string{
 		"Version":           packet.DefaultVersion,
 		"Comment":           "Encrypted data",
 		"Hash":              "SHA256",
 		"Charset":           "UTF-8",
 		"Compression":       "ZIP",
-		"Encryption":        "ChaCha20-Poly1305",
-		"Encryption Cipher": "ChaCha20-Poly1305",
+		"Encryption":        "AES256",
+		"Encryption Cipher": "AES256",
 	})
 	if err != nil {
 		log.Fatal(err)
