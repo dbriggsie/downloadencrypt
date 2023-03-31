@@ -1,55 +1,81 @@
-## Encrypted File Downloader
+# Encrypted File Downloader
+This program downloads a file from a given URL and encrypts it using the recipient's public key. It uses the Aria2c downloader for fast and efficient downloads, and the OpenPGP library for encryption.
 
-This tool downloads a file from a URL, encrypts it with OpenPGP and stores it securely in an encrypted directory. The encryption used is ChaCha20-Poly1305.
+## Installation
+### Prerequisites
+- Go 1.16 or later
+- Aria2c command line download utility
+- GnuPG command line tool for generating a public key
 
-### Installation
-Download the source code from the GitHub repository.
-
-Install Aria2c by running the following command in your terminal:
-
+## Install Aria2c
+### Debian/Ubuntu
 ```
 sudo apt-get install aria2
 ```
-
-Install the Go programming language by following the instructions here.
-
-### Usage 
-Open a terminal and navigate to the directory containing the downloaded source code.
-Run the following command to build the program:
+### macOS (using Homebrew)
 ```
-go build -o encrypted-downloader main.go
-```
-Run the program with the following command:
-```
-./encrypted-downloader
-```
-Enter the URL of the file you wish to download and encrypt when prompted. The program will download the file using Aria2c and encrypt it using OpenPGP with the recipient's public key.
-
-Enter the recipient's public key when prompted. The program will encrypt the file using the provided key.
-
-Once the file is downloaded and encrypted successfully, it will be securely stored in the encrypted directory.
-
-The encrypted file can only be accessed by someone with the key to decrypt it.
-
-### Security Considerations
-The program uses ChaCha20-Poly1305 for encryption, which is considered to be secure.
-The encrypted directory is protected by file permissions, which ensures that only the owner can access it.
-The encrypted file can only be decrypted with the recipient's private key.
-
-### File Decryption
-To decrypt the encrypted file, the recipient must have their private key that corresponds to the public key that was used to encrypt the file. Here are the steps to decrypt the file:
-
-Open the encrypted file in a text editor or command-line interface and copy the contents.
-Save the contents to a file, e.g. "encrypted.asc".
-Open a command-line interface and navigate to the directory containing the encrypted file.
-Import the recipient's private key using GPG or OpenPGP-compatible software:
-```
-$ gpg --import path/to/private/key
+brew install aria2
 ```
 
-Decrypt the file using the same encryption algorithm and cipher used to encrypt it. In this case, ChaCha20-Poly1305:
+## Install GnuPG
+### Debian/Ubuntu
 ```
-$ gpg --decrypt encrypted.asc
+sudo apt-get install gnupg
 ```
-The software will prompt for the recipient's passphrase to unlock their private key.
-The decrypted file will be saved to the current directory with the original filename.
+### macOS (using Homebrew)
+
+```
+brew install gnupg
+```
+
+## Build the DownloadEncrypt Program
+
+Copy the source code into a file named *`main.go`*.
+Open a terminal and navigate to the directory containing *`main.go`*.
+Run the following command to build the executable:
+
+```
+go build -o encrypted-file-downloader main.go
+```
+This will create an executable named encrypted-file-downloader.
+
+## Usage
+Generate a public/private key pair
+Open a terminal and run the following command to generate a new public/private key pair:
+```
+gpg --gen-key
+```
+Follow the prompts to create the key pair. Use the default settings for key type, key size, and expiration date.
+
+Once the key pair is created, export the public key in ASCII armored format:
+
+```
+gpg --armor --export <your-email-address> > recipient_public_key.asc
+```
+This will save the public key to a file named recipient_public_key.asc.
+
+Encrypt and download a file
+Run the executable in a terminal:
+```
+./encrypted-file-downloader
+```
+Enter the download URL when prompted:
+```
+Enter download URL: <download URL>
+```
+
+Open the *`recipient_public_key.asc`* file and copy the entire content (including the header and footer).
+
+Enter the recipient's public key in ASCII armored format when prompted:
+```
+Enter recipient public key: <paste the content of recipient_public_key.asc here>
+```
+The program will download the file, encrypt it using the recipient's public key, and save the encrypted file in the *`./encrypted directory`*.
+
+Upon successful encryption and saving of the file, you will see the following message:
+
+```
+File downloaded and encrypted successfully!
+```
+
+*Note:* The program checks for available space in the ./encrypted directory before downloading and encrypting the file. If there is not enough space, the program will exit with an error message. Ensure that you have at least 5GB of free space in the ./encrypted directory before running the program.
